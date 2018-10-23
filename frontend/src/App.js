@@ -4,6 +4,7 @@ import './App.css';
 import GridLayout from 'react-grid-layout';
 import Clock from './Components/Clock';
 import RosterOn from './Components/RosterOn'
+import Annoucements from './Components/Annoucements'
 //import '/node_modules/react-grid-layout/css/styles.css'
 //import '/node_modules/react-resizable/css/styles.css'
 
@@ -11,9 +12,10 @@ import RosterOn from './Components/RosterOn'
 class App extends Component {
   render() {
     var layout = [
-      {i: 'a', x: 0, y: 0, w: 1, h: 2, static: true},
-      {i: 'b', x: 1, y: 0, w: 3, h: 2, minW: 2, maxW: 4},
-      {i: 'c', x: 4, y: 0, w: 1, h: 2}
+      {i: 'a', x: 0, y: 0, w: 4, h: 5,minH: 7},
+      {i: 'b', x: 4, y: 0, w: 4, h: 7},
+      {i: 'c', x: 4, y: 3, w: 4, h: 3},
+      {i: 'd', x: 0, y: 0, w: 4, h: 3},
     ];
     return (
       <div>
@@ -26,7 +28,12 @@ class App extends Component {
           <div key="b">
             <RosterOn />
           </div>
-          <div key="c">c</div>
+          <div key="c">
+            <RosterOn />
+          </div>
+          <div key="d">
+            <Annoucements />
+          </div>
         </GridLayout>
       </div>
     );
