@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import {Panel, Table} from 'react-bootstrap';
 import {map} from 'lodash';
+import axios from 'axios';
+import config from '../config';
 
 
 export default class RosteredOn extends Component {
@@ -10,11 +12,42 @@ export default class RosteredOn extends Component {
     this.state = {
       staff : [],
     }
-    this.state.staff.push({name : 'person 1',start_time: '09:00',end_time:'15:00'})
-    this.state.staff.push({name : 'person 2',start_time: '10:00',end_time:'18:00'})
-    this.state.staff.push({name : 'person 3',start_time: '14:00',end_time:'20:00'})
-    this.state.staff.push({name : 'person 4',start_time: '15:00',end_time:'20:00'})
-    this.state.staff.push({name : 'person 5',start_time: '14:00',end_time:'20:00'})
+  }
+
+  componentDidMount(){
+      this.getRoster()
+  }
+
+  convertTime(unix_timestamp){
+    //Copied from https://stackoverflow.com/questions/847185/convert-a-unix-timestamp-to-time-in-javascript
+
+    // Create a new JavaScript Date object based on the timestamp
+    // multiplied by 1000 so that the argument is in milliseconds, not seconds.
+    var date = new Date(unix_timestamp*1000);
+    // Hours part from the timestamp
+    var hours = date.getHours();
+    // Minutes part from the timestamp
+    var minutes = "0" + date.getMinutes();
+    // Seconds part from the timestamp
+    var seconds = "0" + date.getSeconds();
+
+    // Will display time in 10:30:23 format
+    var formattedTime = hours + ':' + minutes.substr(-2) //+ ':' + seconds.substr(-2);
+    return formattedTime
+  }
+
+  async getRoster(){
+    axios({
+        url : 'http://localhost:5000/api/deputy',
+        method : 'GET',
+    }).then(
+        (response) =>
+        {
+          var roster = response.data
+          
+          this.setState({staff: response.data})
+        }
+    )
   }
 
 
@@ -37,8 +70,8 @@ export default class RosteredOn extends Component {
                   return(
                       <tr>
                         <td>{member.name}</td>
-                        <td>{member.start_time}</td>
-                        <td>{member.end_time}</td>
+                        <td>{this.convertTime(member.start)}</td>
+                        <td>{this.convertTime(member.end)}</td>
                       </tr>
                   )
                 })
