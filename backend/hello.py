@@ -25,16 +25,15 @@ def getRoster():
                 }
 
     response = requests.post(url+'/QUERY',headers=headers,data=json.dumps(payload))
-
     arr = response.json()
-
     #These are the people who are rostered on today
     people = []
 
     for obj in arr:
         #"OperationalUnitName" This is used to tell which space the person is working
         #This checks to see whether it is the right space
-        if obj["_DPMetaData"]["OperationalUnitInfo"]["OperationalUnitName"] == "Willis Annex":
+        print(obj["_DPMetaData"]["OperationalUnitInfo"]["OperationalUnitName"])
+        if obj["_DPMetaData"]["OperationalUnitInfo"]["OperationalUnitName"] == "Willis Annex Makerspace":
             #This is used to check if that person is working today
             if obj['StartTimeLocalized'].startswith(datetime.datetime.today().strftime('%Y-%m-%d')):
                 if not isinstance(obj["_DPMetaData"]["EmployeeInfo"],list):
@@ -48,6 +47,8 @@ def getRoster():
                                 'end': endTime,
                             }
                     people.append(data)
+    people.reverse()
+    print(people)
     return jsonify(people)
 
 @app.route("/api/timetable")

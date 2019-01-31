@@ -26,6 +26,9 @@ export default class RosteredOn extends Component {
     var date = new Date(unix_timestamp*1000);
     // Hours part from the timestamp
     var hours = date.getHours();
+    if (hours > 12){
+      hours -= 12;
+    }
     // Minutes part from the timestamp
     var minutes = "0" + date.getMinutes();
     // Seconds part from the timestamp
@@ -52,34 +55,43 @@ export default class RosteredOn extends Component {
 
 
   render(){
+    let rowStyle = {
+      height : '100px',
+      textAlign: 'center',
+      verticalAlign: 'middle',
+      fontSize: '50px',
+    }
+
     return(
-      <Panel>
-        <Panel.Heading>Who is rostered on</Panel.Heading>
-        <Panel.Body>
-          <Table striped bordered condensed hover>
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Start Time</th>
-                <th>End Time</th>
-              </tr>
-            </thead>
-            <tbody>
-              {
-                map(this.state.staff,(member) => {
-                  return(
-                      <tr>
-                        <td>{member.name}</td>
-                        <td>{this.convertTime(member.start)}</td>
-                        <td>{this.convertTime(member.end)}</td>
-                      </tr>
-                  )
-                })
-              }
-            </tbody>
-          </Table>
-        </Panel.Body>
-      </Panel>
+      <div>
+        <h1>
+          Makerspace Staff
+        </h1>
+        <Table striped bordered condensed hover>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Start Time</th>
+              <th>End Time</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              map(this.state.staff,(member) => {
+                return(
+                    <tr>
+                      <td style={rowStyle} width='75%'>{member.name}</td>
+                      <td style={rowStyle} >{this.convertTime(member.start)}</td>
+                      <td style={rowStyle} >{this.convertTime(member.end)}</td>
+                    </tr>
+                )
+              })
+            }
+          </tbody>
+        </Table>
+      </div>
+
+      
     );
   }
 }

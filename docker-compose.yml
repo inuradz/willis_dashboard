@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+  backend:
+    build: ./backend
+    command: bash -c 'cd backend && python hello.py'
+    volumes:
+      - .:/code/
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_APP=hello.py
+      #- DEPUTY_TOKEN=fc030367f269a557aaa0321c2820e1b6 #<INSERT_HERE>
+  
+  frontend: #This is where the front end would
+    build: ./frontend
+    command: bash -c 'ls && npm start'
+    volumes:
+      - .:/code/client/
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
